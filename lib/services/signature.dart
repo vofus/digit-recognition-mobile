@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
 class Signature extends CustomPainter {
+  static final double width = 20.0;
   static final Paint _paint = Paint()
     ..color = Colors.black
     ..strokeCap = StrokeCap.round
-    ..strokeWidth = 20.0;
+    ..strokeWidth = width;
 
   List<Offset> points;
 
@@ -12,10 +13,6 @@ class Signature extends CustomPainter {
 
   @override
   bool shouldRepaint(Signature oldDelegate) {
-    print('shouldRepaint: ${oldDelegate.points != points}');
-    print('shouldRepaint OLD: ${oldDelegate.points.length}');
-    print('shouldRepaint NEW: ${points.length}');
-
     return oldDelegate.points.length != points.length;
   }
 

@@ -10,29 +10,47 @@ class Sketchpad extends StatefulWidget {
   clear() {
     _state.clear();
   }
+
+  List<Offset> getPoints() {
+    return _state.points;
+  }
 }
 
 
 class _SketchpadState extends State<Sketchpad> {
+  static const double _WIDTH = 280.0;
+  static const double _HEIGHT = 280.0;
+
+  static bool _pointValidate(Offset point) {
+    return point.dx >= 0
+        && point.dx <= _WIDTH
+        && point.dy >= 0
+        && point.dy <= _HEIGHT;
+  }
+
   List<Offset> _points = [];
+
+  List<Offset> get points => _points;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 280.0,
-      height: 280.0,
-      margin: EdgeInsets.all(20.0),
+      width: _WIDTH,
+      height: _HEIGHT,
       decoration: BoxDecoration(
-          border: Border.all(width: 1.0, color: Colors.blue)),
+          border: Border.all(width: 1.0, color: Colors.blue)
+      ),
       child: GestureDetector(
         onPanUpdate: (DragUpdateDetails details) {
           RenderBox obj = context.findRenderObject();
           Offset _localPosition =
           obj.globalToLocal(details.globalPosition);
 
-          setState(() {
-            _points = List.from(_points)..add(_localPosition);
-          });
+          if (_pointValidate(_localPosition)) {
+            setState(() {
+              _points = List.from(_points)..add(_localPosition);
+            });
+          }
         },
         onPanEnd: (DragEndDetails details) => _points.add(null),
         child: CustomPaint(
